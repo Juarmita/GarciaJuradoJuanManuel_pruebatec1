@@ -1,0 +1,9 @@
+com\mycompany\empleados\logic\Controladora.class
+com\mycompany\empleados\logic\Empleado_.class
+com\mycompany\empleados\Main.class
+com\mycompany\empleados\persistance\exceptions\PreexistingEntityException.class
+com\mycompany\empleados\logic\Empleado.class
+com\mycompany\empleados\persistance\exceptions\NonexistentEntityException.class
+com\mycompany\empleados\persistance\ControladoraPersistencia.class
+com\mycompany\empleados\persistance\exceptions\IllegalOrphanException.class
+com\mycompany\empleados\persistance\EmpleadoJpaController.class
