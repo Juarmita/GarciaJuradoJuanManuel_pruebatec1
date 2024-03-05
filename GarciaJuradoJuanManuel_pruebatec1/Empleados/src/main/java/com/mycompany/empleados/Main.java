@@ -2,6 +2,8 @@ package com.mycompany.empleados;
 
 import com.mycompany.empleados.logic.Controladora;
 import com.mycompany.empleados.logic.Empleado;
+import java.time.DateTimeException;
+import java.time.LocalDate;//Usado para la validacion del formato de fecha
 import java.util.Scanner;
 import java.util.List;
 
@@ -10,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);//Recogemos los datos por consola
 
-        int opc = -1; //Opcion elegida por el usuario
+        int opc = -1; //Opcion elegida por el usuario, la inicializamos en negativo
         //Instancia de la controladora
         Controladora control = new Controladora();
 
@@ -49,9 +51,28 @@ public class Main {
                         System.out.println("Introduzca el salario: ");
                         double salario = Double.parseDouble(scanner.nextLine());
                         trabajador.setSalario(salario);
-                        System.out.println("Introduzca la fecha de inicio en formato dd/mm/yyyy: ");
-                        trabajador.setFechaInicio(scanner.nextLine());
-
+                        boolean fechaValida = false;//Incluyo esto para hacer una validacion del que formato introducido en la fecha sea correcto
+                        while (!fechaValida) {
+                            System.out.println("Introduzca la fecha de inicio en formato dd/mm/yyyy: ");
+                            String fechaInicioStr = scanner.nextLine(); //Leemos la entrada por teclado
+                            // Separar la fecha en día, mes y año
+                            String[] partesFecha = fechaInicioStr.split("/");//Se dividie usando split
+                            if (partesFecha.length != 3) {//Verifico que se obtienen 3 partes (dd/mm/aaaa), si no devuelvo error
+                                System.out.println("Formato de fecha incorrecto. Por favor, ingrese la fecha en formato dd/mm/yyyy.");
+                                continue;
+                            }
+                            int dia = Integer.parseInt(partesFecha[0]);//Si son correctas las 3 partes convertimos los enteros y asignamos las variables
+                            int mes = Integer.parseInt(partesFecha[1]);
+                            int año = Integer.parseInt(partesFecha[2]);
+                            // Validar la fecha usando LocalDate
+                            try {//Manejo de errores en la validacion de la fecha
+                                LocalDate fechaInicio = LocalDate.of(año, mes, dia);//intentamos crear el objeto
+                                trabajador.setFechaInicio(fechaInicioStr);
+                                fechaValida = true;
+                            } catch (DateTimeException e) {
+                                System.out.println("Fecha no válida. Por favor, ingrese una fecha válida.");
+                            }
+                        }
                         //Creacion empleado
                         control.crearTrabajador(trabajador);
                         System.out.println("Empleado dado de alta!!");
@@ -77,7 +98,7 @@ public class Main {
                         // Llamar al método buscarPorCargo y proporcionar el cargo que el usuario ha ingresado
                         List<Empleado> empleadosEncontrados = control.buscarPorCargo(cargoABuscar);//Listamos los empleados
 
-                        try {
+                        try {//Manejo de errores en la busqueda del cargo
                             if (empleadosEncontrados.isEmpty()) {//Si no encontramos ningun empleado con el cargo devolvemos el mensaje
                                 throw new Exception("No se encontraron empleados con el cargo especificado.");
                             } else {
@@ -107,7 +128,7 @@ public class Main {
                         System.out.println("Edición del empleado");
                         System.out.println("--------------------");
 
-                        System.out.println("---Selecciona el campo---\n"
+                        System.out.println("---Selecciona el campo---\n"//Creacion de submenú para editar un campo en especifico
                                 + "\nElige una opción:\n"
                                 + "\n1- Editar Nombre: \n"
                                 + "\n2- Editar Apellido: \n"
@@ -185,4 +206,3 @@ public class Main {
     }
 
 }
-

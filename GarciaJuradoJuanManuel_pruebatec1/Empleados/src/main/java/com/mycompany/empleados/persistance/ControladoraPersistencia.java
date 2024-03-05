@@ -42,7 +42,7 @@ public class ControladoraPersistencia {
 
     public List<Empleado> buscarPorCargo(String cargo) {
         EntityManager em = getEntityManager(); // Obtener el EntityManager
-        Query query = em.createQuery("SELECT e FROM Empleado e WHERE e.cargo = :cargo");//uso de querys para poder acceder al cargo
+        Query query = em.createQuery("SELECT e FROM Empleado e WHERE e.cargo = :cargo");//uso de querys para poder acceder al cargo con codigo SQL
         query.setParameter("cargo", cargo);
         List<Empleado> empleados = query.getResultList();//Obtencion de los empleados con el cargo que deseamos
         return empleados;//Devolvemos la lista de empleados con el cargo buscado
